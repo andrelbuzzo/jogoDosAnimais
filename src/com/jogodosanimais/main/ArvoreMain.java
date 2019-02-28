@@ -12,6 +12,7 @@ import com.jogodosanimais.interfaces.AnimalInterface;
 public class ArvoreMain implements AnimalInterface<NoArvoreBinaria> {
 
 	public static int index = 1;
+	public static boolean sair = false;
 	public static NoArvoreBinaria raiz;
 
 	/**
@@ -54,6 +55,27 @@ public class ArvoreMain implements AnimalInterface<NoArvoreBinaria> {
 	 * Método perguntar, implementando a partir da interface AnimalInterface
 	 * usando conceitos de Generics
 	 */
+	public static void reiniciar() {
+		int reiniciar = JOptionPane.showConfirmDialog(null, "Vamos continuar?", "Reiniciar?",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if( reiniciar == 1 ){
+			fechar();
+		}
+	}
+
+	/**
+	 * Método perguntar, implementando a partir da interface AnimalInterface
+	 * usando conceitos de Generics
+	 */
+	public static void fechar() {
+		sair = true;
+		JOptionPane.showMessageDialog(null, "Obrigado por jogar!", "Jogo dos Animais", JOptionPane.ERROR_MESSAGE);
+	}
+
+	/**
+	 * Método perguntar, implementando a partir da interface AnimalInterface
+	 * usando conceitos de Generics
+	 */
 	@Override
 	public void perguntar(NoArvoreBinaria noArvore) {
 		// Faz a pergunta pra ver se o animal está correto
@@ -62,8 +84,10 @@ public class ArvoreMain implements AnimalInterface<NoArvoreBinaria> {
 
 		if (pergunta == 0) {
 			// Se a resposta estiver correta
-			if (noArvore.noDireito == null)
+			if (noArvore.noDireito == null) {
 				JOptionPane.showMessageDialog(null, "Acertei!");
+				reiniciar();
+			}
 			// Faz a nova pergunta pra verificar sé realmente é o animal pensado
 			else {
 				perguntar(noArvore.noDireito);
@@ -83,15 +107,15 @@ public class ArvoreMain implements AnimalInterface<NoArvoreBinaria> {
 		ArvoreMain main = new ArvoreMain();
 		JOptionPane.showMessageDialog(null, "Pense em um Animal...", "Jogo dos Animais", JOptionPane.INFORMATION_MESSAGE);
 
-		// Verifica se arvore está está vazia para inicializar a mesma
+		// Verifica se arvore está vazia para inicializar a mesma
 		if (main.getArvore() == null) {
 			main.setArvore(new NoArvoreBinaria(index, "vive na água?"));
 			main.getArvore().noEsquerdo = new NoArvoreBinaria(++index, "Macaco");
 			main.getArvore().noDireito = new NoArvoreBinaria(++index, "Tubarão");
 		}
-		int sair = 1;
-		// Permanece no laço enquanto sair = 1.
-		do {
+
+		// Permanece no laço enquanto sair = 0.
+		while( !sair ) {
 			// Pergunta inicial
 			int resposta = JOptionPane.showConfirmDialog(null, "O animal que você pensou " + main.getArvore().valor,
 					"Confirme", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -100,16 +124,15 @@ public class ArvoreMain implements AnimalInterface<NoArvoreBinaria> {
 			// caso contrário entra no noEsquerdo
 			if (resposta == 0) {
 				main.perguntar(main.getArvore().noDireito);
-			} else {
+			} else if (resposta == 1) {
 				main.perguntar(main.getArvore().noEsquerdo);
 			}
 			// fecha o aplicativo
 			if (resposta == JOptionPane.CLOSED_OPTION) {
-				JOptionPane.showMessageDialog(null, "Obrigado por jogar!", "Jogo dos Animais", JOptionPane.ERROR_MESSAGE);
-				sair = 0;
+				fechar();
 			}
 
-		} while (sair == 1);
+		}
 
 	}
 
