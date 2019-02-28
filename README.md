@@ -4,3 +4,6 @@ Jogo simulando IA usando árvore binária, onde o programa tenta adivinhar o ani
 Exemplo:
 
 ![](https://raw.githubusercontent.com/andrelbuzzo/jogoDosAnimais/master/exemplo.gif)
+
+# Autor
+deh.metalcore@gmail.com
